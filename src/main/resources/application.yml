@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: kvtag
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    cosmos:
+      uri: ${AZURE_COSMOS_URI:https://qworks-workflow.documents.azure.com:443}
+      key: ${AZURE_COSMOS_KEY}
+      database: ${AZURE_COSMOS_DATABASE:workflow_management}
+      populate-query-metrics: ${AZURE_COSMOS_QUERY_METRICS:false}
+
+server:
+  port: ${SERVER_PORT:8090}
