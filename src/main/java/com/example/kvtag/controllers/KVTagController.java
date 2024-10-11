@@ -1,5 +1,6 @@
 package com.example.kvtag.controllers;
 
+import com.example.kvtag.DTO.KVTagDTO;
 import com.example.kvtag.models.KVTag;
 import com.example.kvtag.services.KVTagService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/kvtag")
 @RequiredArgsConstructor
@@ -16,9 +19,8 @@ public class KVTagController {
     private final KVTagService kvTagService;
 
     @PostMapping
-    public ResponseEntity<Boolean> create(@RequestBody KVTag kvTag) {
-        kvTagService.create(kvTag);
-        return ResponseEntity.ok(true);
+    public ResponseEntity<KVTag> create(@RequestBody KVTagDTO kvTag) {
+        return ResponseEntity.ok(kvTagService.create(kvTag));
     }
 
     @GetMapping("/{key}")
@@ -37,5 +39,27 @@ public class KVTagController {
     {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(kvTagService.getAll(pageable));
+    }
+
+    @PostMapping("/values")
+    public ResponseEntity<KVTag> getByValues(@RequestBody List<String> values) {
+        return ResponseEntity.ok(kvTagService.getByValues(values));
+    }
+
+    @PutMapping()
+    public ResponseEntity<KVTag> update(@RequestBody KVTag kvTag) {
+        return ResponseEntity.ok(kvTagService.update(kvTag));
+    }
+
+    @DeleteMapping("/{key}")
+    public ResponseEntity<?> delete(@PathVariable String key) {
+        kvTagService.delete(key);
+        return ResponseEntity.ok("KVTag deleted successfully");
+    }
+
+    @DeleteMapping("/batch")
+    public ResponseEntity<?> batchDelete(@RequestBody List<String> ids) {
+        kvTagService.batchDelete(ids);
+        return ResponseEntity.ok("KVTags deleted successfully");
     }
 }

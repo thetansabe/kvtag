@@ -30,5 +30,4 @@ public class KVTag extends BaseEntity {
     @Mandatory
     private String name;
     private List<String> values;
-    private boolean isActive;
 }
