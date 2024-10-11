@@ -40,19 +40,7 @@ public class KVTagService {
     }
 
     public KVTag getByValues(List<String> values) {
-        CosmosDatabase database = cosmosClientBuilder.buildClient().getDatabase(cosmosDatabase);
-        CosmosContainer container = database.getContainer("KVTag");
-
-        List<String> containsCondition = values.stream().map(value -> String.format("'%s'", value)).toList();
-        String containsConditionString = String.join(", ", containsCondition);
-
-        String sql = String.format("SELECT VALUE KVTag FROM KVTag WHERE ARRAY_CONTAINS_ALL(KVTag.values, %s)", containsConditionString);
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-
-        CosmosPagedIterable<KVTag> items = container.queryItems(sql, options, KVTag.class);
-        Optional<KVTag> res = items.stream().findFirst();
-
-        return res.orElse(null);
+        return kvTagRepository.findByValue(values).orElse(null);
     }
 
     public void delete(String key) {
