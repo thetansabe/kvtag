@@ -1,12 +1,12 @@
 package com.example.kvtag.services;
 
 import com.azure.cosmos.CosmosClientBuilder;
-import com.example.kvtag.DTO.KVTagDTO;
+import com.example.kvtag.dto.KVTagDTO;
 import com.example.kvtag.exception.CustomException.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.example.kvtag.models.KVTag;
+import com.example.kvtag.entity.KVTag;
 import com.example.kvtag.repositories.KVTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

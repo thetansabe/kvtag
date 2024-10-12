@@ -1,4 +1,4 @@
-package com.example.kvtag.models;
+package com.example.kvtag.entity;
 
 import ai.qworks.dao.annotations.SharedObject;
 import ai.qworks.dao.base.BaseEntity;

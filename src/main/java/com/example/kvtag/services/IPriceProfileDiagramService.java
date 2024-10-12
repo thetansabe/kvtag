@@ -1,6 +1,8 @@
 package com.example.kvtag.services;
 
-import com.example.kvtag.DTO.PriceProfileDiagramDto;
+import com.example.kvtag.dto.PriceProfileDiagramDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * The interface Price profile diagram service.
@@ -18,9 +20,10 @@ public interface IPriceProfileDiagramService {
     /**
      * Gets all.
      *
+     * @param pageable the pageable
      * @return the all
      */
-    Iterable<PriceProfileDiagramDto> getAll();
+    Page<PriceProfileDiagramDto> getAll(Pageable pageable);
 
     /**
      * Gets by id.

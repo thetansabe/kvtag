@@ -1,11 +1,13 @@
 package com.example.kvtag.services.impl;
 
-import com.example.kvtag.DTO.PriceProfileDiagramDto;
+import com.example.kvtag.dto.PriceProfileDiagramDto;
 import com.example.kvtag.exception.CustomException.EntityNotFoundException;
-import com.example.kvtag.models.PriceProfileDiagram;
+import com.example.kvtag.entity.PriceProfileDiagram;
 import com.example.kvtag.repositories.PriceProfileDiagramRepository;
 import com.example.kvtag.services.IPriceProfileDiagramService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,9 +28,9 @@ public class PriceProfileDiagramService implements IPriceProfileDiagramService {
     }
 
     @Override
-    public Iterable<PriceProfileDiagramDto> getAll() {
-        Iterable<PriceProfileDiagram> diagrams = repository.findAll();
-        return convertToDtoList(diagrams);
+    public Page<PriceProfileDiagramDto> getAll(Pageable pageable) {
+        Page<PriceProfileDiagram> diagrams = repository.findAll(pageable);
+        return diagrams.map(this::convertToDto);
     }
 
     @Override
@@ -81,7 +83,7 @@ public class PriceProfileDiagramService implements IPriceProfileDiagramService {
         return diagram;
     }
 
-    private Iterable<PriceProfileDiagramDto> convertToDtoList(Iterable<PriceProfileDiagram> diagrams) {
+    private List<PriceProfileDiagramDto> convertToDtoList(Iterable<PriceProfileDiagram> diagrams) {
         List<PriceProfileDiagramDto> dtoList = new ArrayList<>();
         for (PriceProfileDiagram diagram : diagrams) {
             dtoList.add(convertToDto(diagram));

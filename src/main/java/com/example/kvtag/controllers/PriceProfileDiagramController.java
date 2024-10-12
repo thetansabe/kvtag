@@ -1,8 +1,11 @@
 package com.example.kvtag.controllers;
 
-import com.example.kvtag.DTO.PriceProfileDiagramDto;
+import com.example.kvtag.dto.PriceProfileDiagramDto;
+import com.example.kvtag.dto.response.ApiResponse;
 import com.example.kvtag.services.IPriceProfileDiagramService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +23,21 @@ public class PriceProfileDiagramController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<PriceProfileDiagramDto>> getAll() {
-        Iterable<PriceProfileDiagramDto> diagrams = priceProfileDiagramService.getAll();
-        return ResponseEntity.ok(diagrams);
+    public ResponseEntity<ApiResponse<PriceProfileDiagramDto>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size) {
+        Page<PriceProfileDiagramDto> diagrams = priceProfileDiagramService.getAll(
+                PageRequest.of(page, size)
+        );
+
+        ApiResponse<PriceProfileDiagramDto> response = new ApiResponse<>(
+                diagrams.getTotalElements(),
+                size,
+                page,
+                diagrams.getTotalPages(),
+                diagrams.getContent()
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
