@@ -2,7 +2,7 @@ package com.example.kvtag.repositories;
 
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.repository.Query;
-import com.example.kvtag.models.KVTag;
+import com.example.kvtag.entity.KVTag;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 

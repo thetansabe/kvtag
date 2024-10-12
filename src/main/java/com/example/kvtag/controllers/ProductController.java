@@ -1,7 +1,7 @@
 package com.example.kvtag.controllers;
 
 
-import com.example.kvtag.models.Product;
+import com.example.kvtag.entity.Product;
 import com.example.kvtag.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

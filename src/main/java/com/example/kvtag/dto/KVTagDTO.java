@@ -1,4 +1,4 @@
-package com.example.kvtag.DTO;
+package com.example.kvtag.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

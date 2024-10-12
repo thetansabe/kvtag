@@ -1,6 +1,6 @@
 package com.example.kvtag.services;
 
-import com.example.kvtag.models.Product;
+import com.example.kvtag.entity.Product;
 import com.example.kvtag.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

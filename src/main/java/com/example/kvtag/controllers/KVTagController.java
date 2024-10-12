@@ -1,7 +1,7 @@
 package com.example.kvtag.controllers;
 
-import com.example.kvtag.DTO.KVTagDTO;
-import com.example.kvtag.models.KVTag;
+import com.example.kvtag.dto.KVTagDTO;
+import com.example.kvtag.entity.KVTag;
 import com.example.kvtag.services.KVTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

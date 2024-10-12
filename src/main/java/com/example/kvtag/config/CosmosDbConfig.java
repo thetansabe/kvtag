@@ -4,43 +4,35 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
-import org.springframework.beans.factory.annotation.Value;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CosmosDbConfig extends AbstractCosmosConfiguration {
 
-    @Value("${spring.data.cosmos.uri}")
-    private String cosmosUri;
-
-    @Value("${spring.data.cosmos.key}")
-    private String cosmosKey;
-
-    @Value("${spring.data.cosmos.populate-query-metrics}")
-    private String queryMetricsEnabled;
-
-    @Value("${spring.data.cosmos.database}")
-    private String cosmosDatabase;
+    @Resource
+    private CosmosDbProperties cosmosDbProperties;
 
     @Bean
     public CosmosClientBuilder cosmosClientBuilder() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         return new CosmosClientBuilder()
-                .endpoint(this.cosmosUri)
-                .key(this.cosmosKey)
+                .endpoint(cosmosDbProperties.getUri())
+                .key(cosmosDbProperties.getKey())
                 .directMode(directConnectionConfig);
     }
 
     @Bean
+    @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                .enableQueryMetrics(true)
+                .enableQueryMetrics(cosmosDbProperties.getPopulateQueryMetrics())
                 .build();
     }
 
     @Override
     protected String getDatabaseName() {
-        return this.cosmosDatabase;
+        return cosmosDbProperties.getDatabase();
     }
 }
