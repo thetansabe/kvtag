@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -83,11 +81,4 @@ public class PriceProfileDiagramService implements IPriceProfileDiagramService {
         return diagram;
     }
 
-    private List<PriceProfileDiagramDto> convertToDtoList(Iterable<PriceProfileDiagram> diagrams) {
-        List<PriceProfileDiagramDto> dtoList = new ArrayList<>();
-        for (PriceProfileDiagram diagram : diagrams) {
-            dtoList.add(convertToDto(diagram));
-        }
-        return dtoList;
-    }
 }
