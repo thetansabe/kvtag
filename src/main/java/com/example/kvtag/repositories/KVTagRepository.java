@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface KVTagRepository extends CosmosRepository<KVTag, String> {
     Optional<KVTag> findByName(String name);
 
-    @Query("SELECT VALUE KVTag FROM KVTag WHERE ARRAY_CONTAINS_ALL(KVTag.values, @targetValues) offset 0 limit 1")
-    Optional<KVTag> findByValue(@Param("targetValues") List<String> targetValues);
+    @Query("SELECT VALUE KVTag FROM KVTag WHERE ARRAY_CONTAINS_ALL(KVTag.values, @targetValues)")
+    Optional<List<KVTag>> findByValue(@Param("targetValues") List<String> targetValues);
 }

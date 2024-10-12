@@ -42,7 +42,7 @@ public class KVTagController {
     }
 
     @PostMapping("/values")
-    public ResponseEntity<KVTag> getByValues(@RequestBody List<String> values) {
+    public ResponseEntity<List<KVTag>> getByValues(@RequestBody List<String> values) {
         return ResponseEntity.ok(kvTagService.getByValues(values));
     }
 

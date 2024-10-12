@@ -1,11 +1,8 @@
 package com.example.kvtag.services;
 
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.util.CosmosPagedIterable;
 import com.example.kvtag.DTO.KVTagDTO;
+import com.example.kvtag.exception.CustomException.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,15 +28,19 @@ public class KVTagService {
     }
 
     public KVTag get(String key) {
-        return kvTagRepository.findById(key).orElse(null);
+        return kvTagRepository.findById(key).orElseThrow(() -> new EntityNotFoundException("No KVTag found with provided id"));
     }
 
     public KVTag getByName(String name) {
-        return kvTagRepository.findByName(name).orElse(null);
+        return kvTagRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("No KVTag found with provided name"));
     }
 
-    public KVTag getByValues(List<String> values) {
-        return kvTagRepository.findByValue(values).orElse(null);
+    public List<KVTag> getByValues(List<String> values) {
+        var res = kvTagRepository.findByValue(values);
+        if (res.isEmpty() || res.get().isEmpty()) {
+            throw new EntityNotFoundException("No KVTag found with provided values");
+        }
+        return res.get();
     }
 
     public void delete(String key) {
