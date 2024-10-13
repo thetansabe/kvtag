@@ -6,6 +6,7 @@ import ai.qworks.dao.base.BaseEntity;
 import ai.qworks.dto.SubscriptionManagement;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import com.example.kvtag.entity.KVTag;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
