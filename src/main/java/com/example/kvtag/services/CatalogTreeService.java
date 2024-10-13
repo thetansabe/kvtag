@@ -336,9 +336,9 @@ public class CatalogTreeService {
                 try {
                     Field field = PriceListItem.class.getDeclaredField(fieldName);
                     field.setAccessible(true);
-                    
+
                     if(field.get(item) == null) {
-                        return false;
+                        continue;
                     }
 
                     double fieldValue = (Double) field.get(item);
