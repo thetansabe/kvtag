@@ -7,6 +7,7 @@ import ai.qworks.dao.nontransaction.CatalogTree;
 import com.example.kvtag.util.FormulaEvaluator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -315,21 +316,22 @@ public class CatalogTreeService {
     }
 
 
-    public static boolean searchCatalogTree(CatalogTree rootNode, String text) {
-        if (isValidComparisonCondition(text)) {
-            return searchTreeByCondition(rootNode, text);
+    public static boolean isMatchingInput(CatalogTree node, String text) {
+        if (isSearchingByNumber(text)) {
+            return isMatchingNumberInput(node, text);
+        } else {
+            return false; // isStringExistInCatalogData()
         }
-        return false;
     }
 
-    private static boolean isValidComparisonCondition(String text) {
+    private static boolean isSearchingByNumber(String text) {
         return text.matches("^(>=|<=|>|<|=)?\\s*\\d+(\\.\\d+)?$");
     }
 
-    private static boolean searchTreeByCondition(CatalogTree node, String condition) {
-        List<String> fieldNames = List.of("basePrice", "extendedPrice", "baseExtendedPrice");
-        if ("PriceListItem".equals(node.getType())) {
+    private static boolean isMatchingNumberInput(CatalogTree node, String condition) {
+        if ("pricelistitem".equals(StringUtils.lowerCase(node.getType()))) {
             PriceListItem item = (PriceListItem) node.getData();
+            List<String> fieldNames = List.of("listPrice", "discountedPrice", "basePrice", "extendedPrice", "baseExtendedPrice", "taxes", "shippingPrice", "adjustedNetPrice", "adjustmentValue");
             for (String fieldName : fieldNames) {
                 try {
                     Field field = PriceListItem.class.getDeclaredField(fieldName);
@@ -351,7 +353,6 @@ public class CatalogTreeService {
         return false;
     }
 
-    // (>=, <=, >, <, =)
     private static boolean evaluateCondition(double value, String condition) {
         condition = condition.replaceAll("\\s+", "");
 
@@ -383,7 +384,7 @@ public class CatalogTreeService {
 
     public static void main(String[] args) throws JsonProcessingException {
         CatalogTree tree = mockCatalogTree();
-        searchCatalogTree(tree, ">= 300");
+        isMatchingInput(tree, ">= 300");
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(tree);
         System.out.println(jsonString);
