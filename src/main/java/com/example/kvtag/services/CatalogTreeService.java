@@ -88,8 +88,11 @@ public class CatalogTreeService {
 
     // DO NOT USE STATIC IN REAL CASE
     private static boolean isMatchingInput(CatalogTree node, String text) {
-        if ("PriceListItem".equalsIgnoreCase(node.getType()) && NumberFilterEvaluator.isSearchingByNumber(text)) {
-            return isMatchingNumberInput(node, text);
+        if (NumberFilterEvaluator.isSearchingByNumber(text)) {
+            // search for number only apply for PriceListItem
+            if("PriceListItem".equalsIgnoreCase(node.getType()))
+                return isMatchingNumberInput(node, text);
+            return false;
         }
 
         return isStringExistInCatalogData(text, node);
