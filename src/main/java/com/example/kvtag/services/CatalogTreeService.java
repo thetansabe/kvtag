@@ -26,6 +26,7 @@ public class CatalogTreeService {
             if(item.getKey() != null && item.getKey().toLowerCase().endsWith("id"))
                 continue;
 
+            // this is the field name for kvTags in each of the objects
             if("kvTags".equalsIgnoreCase(item.getKey())){
                 var kvTags = item.getValue();
                 if(kvTags instanceof List<?>){
