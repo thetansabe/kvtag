@@ -17,7 +17,7 @@ import java.util.Vector;
 public class CatalogTreeService {
     // DO NOT USE STATIC IN REAL CASE
     private static boolean isStringExistInCatalogData(String input, CatalogTree node){
-        List<String> filterFields = new ArrayList<>();
+        List<String> filterFields;
 
         switch (node.getType()){
             case "Category":
@@ -45,6 +45,9 @@ public class CatalogTreeService {
                 var kvTags = lHashMap.get(filterField);
                 if(kvTags instanceof List<?>){
                     for(LinkedHashMap<String, Object> kvTag : (List<LinkedHashMap<String, Object>>) kvTags){
+                        if(kvTag == null || (kvTag.get("name") == null && kvTag.get("values") == null)){
+                            continue;
+                        }
                         sb.append(kvTag.get("name")).append("##");
                         String values = String.join(", ", (List<String>) kvTag.get("values"));
                         if(StringUtils.isNotBlank(values)){
@@ -87,9 +90,9 @@ public class CatalogTreeService {
     private static boolean isMatchingInput(CatalogTree node, String text) {
         if ("PriceListItem".equalsIgnoreCase(node.getType()) && NumberFilterEvaluator.isSearchingByNumber(text)) {
             return isMatchingNumberInput(node, text);
-        } else {
-            return isStringExistInCatalogData(text, node);
         }
+
+        return isStringExistInCatalogData(text, node);
     }
 
     // DO NOT USE STATIC IN REAL CASE

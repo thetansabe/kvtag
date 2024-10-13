@@ -16,12 +16,17 @@
 //
 //	@Test
 //	void getCatalogDataByFilter(){
-//		CatalogTree root = com.example.kvtag.services.CatalogTreeService.mockCatalogTree();
-//		String filter = "CNS, IMH";
+//		List<String> test = new ArrayList<>(){
+//            {
+//                add(null);
+//                add(null);
+//                add(null);
+//            }
+//        };
 //
-//		com.example.kvtag.services.CatalogTreeService.dfsAssembleByFilter(filter, root);
-//
-//		System.out.println("Result:");
+//        for(String s : test){
+//            System.out.println(s);
+//        }
 //
 //	}
 //

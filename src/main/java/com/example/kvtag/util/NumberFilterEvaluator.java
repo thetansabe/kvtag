@@ -17,20 +17,13 @@ public class NumberFilterEvaluator {
 
         double compareValue = Double.parseDouble(compareValueStr);
 
-        switch (operator) {
-            case ">":
-                return value > compareValue;
-            case "<":
-                return value < compareValue;
-            case ">=":
-                return value >= compareValue;
-            case "<=":
-                return value <= compareValue;
-            case "=":
-            case "==":
-                return value == compareValue;
-            default:
-                return false;
-        }
+        return switch (operator) {
+            case ">" -> value > compareValue;
+            case "<" -> value < compareValue;
+            case ">=" -> value >= compareValue;
+            case "<=" -> value <= compareValue;
+            case "=", "==" -> value == compareValue;
+            default -> false;
+        };
     }
 }
