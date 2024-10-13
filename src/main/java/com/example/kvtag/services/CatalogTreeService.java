@@ -42,7 +42,10 @@ public class CatalogTreeService {
                     }
                 }
             }else{
-                var value = lHashMap.get(item.getKey());
+                var value = item.getValue();
+                if(value == null || StringUtils.isBlank(value.toString())){
+                    continue;
+                }
                 sb.append(value).append(", ");
             }
         }
