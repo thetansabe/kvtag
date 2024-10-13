@@ -16,32 +16,18 @@ import java.util.Vector;
 @Service
 public class CatalogTreeService {
     private static boolean isStringExistInCatalogData(String input, CatalogTree node){
-        List<String> filterFields;
-
-        switch (node.getType()){
-            case "Category":
-                filterFields = Constants.categoryFilterStrings;
-                break;
-            case "Product":
-                filterFields = Constants.productFilterStrings;
-                break;
-            case "PriceListItem":
-                filterFields = Constants.priceListItemFilterStrings;
-                break;
-            default:
-                return false;
-        }
-
         StringBuilder sb = new StringBuilder();
 
-        for(String filterField : filterFields){
-            if(!(node.getData() instanceof LinkedHashMap<?, ?>))
+        if(!(node.getData() instanceof LinkedHashMap<?, ?>))
+            return false;
+
+        var lHashMap = (LinkedHashMap<String, Object>) node.getData();
+        for(var item : lHashMap.entrySet()){
+            if(item.getKey() != null && item.getKey().toLowerCase().endsWith("id"))
                 continue;
 
-            var lHashMap = (LinkedHashMap<String, Object>) node.getData();
-
-            if("kvTags".equalsIgnoreCase(filterField)){
-                var kvTags = lHashMap.get(filterField);
+            if("kvTags".equalsIgnoreCase(item.getKey())){
+                var kvTags = item.getValue();
                 if(kvTags instanceof List<?>){
                     for(LinkedHashMap<String, Object> kvTag : (List<LinkedHashMap<String, Object>>) kvTags){
                         if(kvTag == null || (kvTag.get("name") == null && kvTag.get("values") == null)){
@@ -55,7 +41,7 @@ public class CatalogTreeService {
                     }
                 }
             }else{
-                var value = lHashMap.get(filterField);
+                var value = lHashMap.get(item.getKey());
                 sb.append(value).append(", ");
             }
         }
@@ -85,8 +71,11 @@ public class CatalogTreeService {
     }
 
     private static boolean isMatchingInput(CatalogTree node, String text) {
-        if ("PriceListItem".equalsIgnoreCase(node.getType()) && NumberFilterEvaluator.isSearchingByNumber(text)) {
-            return isMatchingNumberInput(node, text);
+        if (NumberFilterEvaluator.isSearchingByNumber(text)) {
+            // search for number only apply for PriceListItem
+            if("PriceListItem".equalsIgnoreCase(node.getType()))
+                return isMatchingNumberInput(node, text);
+            return false;
         }
 
         return isStringExistInCatalogData(text, node);
