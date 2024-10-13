@@ -17,6 +17,7 @@ public class CatalogTreeController {
 
     @PostMapping("/global_search")
     public ResponseEntity<List<CatalogTree>> globalSearch(@RequestBody CatalogSearchDTO catalogSearchDTO) {
+        // Currently we are getting the CatalogTree data from the body for testing purpose. While doing the integration, please remove this, just able to send the query String only
         return ResponseEntity.ok(catalogTreeService.globalSearch(catalogSearchDTO.filter, catalogSearchDTO.roots));
     }
 }

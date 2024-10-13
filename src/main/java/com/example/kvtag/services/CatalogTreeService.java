@@ -15,7 +15,6 @@ import java.util.Vector;
 @Slf4j
 @Service
 public class CatalogTreeService {
-    // DO NOT USE STATIC IN REAL CASE
     private static boolean isStringExistInCatalogData(String input, CatalogTree node){
         List<String> filterFields;
 
@@ -64,7 +63,6 @@ public class CatalogTreeService {
         return StringUtils.containsIgnoreCase(sb.toString(), input);
     }
 
-    // DO NOT USE STATIC IN REAL CASE
     private static boolean isMatchingNumberInput(CatalogTree node, String condition) {
         // one of the fields in the list should match the condition
         for (String fieldName : Constants.fieldsForPriceListItemSearch) {
@@ -86,7 +84,6 @@ public class CatalogTreeService {
         return false;
     }
 
-    // DO NOT USE STATIC IN REAL CASE
     private static boolean isMatchingInput(CatalogTree node, String text) {
         if ("PriceListItem".equalsIgnoreCase(node.getType()) && NumberFilterEvaluator.isSearchingByNumber(text)) {
             return isMatchingNumberInput(node, text);
@@ -95,7 +92,6 @@ public class CatalogTreeService {
         return isStringExistInCatalogData(text, node);
     }
 
-    // DO NOT USE STATIC IN REAL CASE
     public static void dfsAssembleByFilter(String input, CatalogTree node){
         if(node.getData() == null || !isMatchingInput(node, input)){
             node.setIsActive(false);
@@ -120,7 +116,7 @@ public class CatalogTreeService {
     }
 
     public List<CatalogTree> globalSearch(String input, List<CatalogTree> roots){
-        List<CatalogTree> result = new ArrayList<>();
+        List<CatalogTree> result = new ArrayList<>(); // fetching all the catalogTree from the database instead of the API body
         for(CatalogTree root : roots){
             dfsAssembleByFilter(input, root);
             if(root.getIsActive()){
