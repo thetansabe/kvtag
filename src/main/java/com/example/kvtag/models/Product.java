@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -61,24 +60,4 @@ public class Product extends BaseEntity {
     private String productUoM;
 
     private List<KVTag> kvTags;
-
-    public String toFilterableString() {
-        StringBuilder sb = new StringBuilder();
-
-        if(this.kvTags != null && !this.kvTags.isEmpty()) {
-            for(KVTag kvTag : this.kvTags) {
-                sb.append(kvTag.getName());
-                String values = String.join(", ", kvTag.getValues());
-                if(StringUtils.isNotBlank(values)) {
-                    sb.append("##").append(values).append(", ");
-                }
-            }
-        }
-
-        return this.productGroupName + ", " + this.productCode + ", " + this.model
-                + ", " + this.productFamily + ", " + this.productUoM
-                + ", " + this.type + ", " + this.productGroupId
-                + ", " + this.productFamilyId + ", " + this.productCode
-                + ", " + this.inclusionCriteria + ", " + sb;
-    }
 }

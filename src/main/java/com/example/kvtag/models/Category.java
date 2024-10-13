@@ -1,7 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
 
 package com.example.kvtag.models;
 
@@ -13,7 +9,6 @@ import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -44,22 +39,6 @@ public class Category extends BaseEntity {
     private String priceListName;
 
     private List<KVTag> kvTags;
-
-    public String toFilterableString() {
-        StringBuilder sb = new StringBuilder();
-
-        if(this.kvTags != null && !this.kvTags.isEmpty()) {
-            for(KVTag kvTag : this.kvTags) {
-                sb.append(kvTag.getName());
-                String values = String.join(", ", kvTag.getValues());
-                if(StringUtils.isNotBlank(values)) {
-                    sb.append("##").append(values).append(", ");
-                }
-            }
-        }
-
-        return this.priceListName + ", " + this.type + ", " + sb;
-    }
 
     public String toString() {
         Boolean var10000 = this.getIsRootOffering();

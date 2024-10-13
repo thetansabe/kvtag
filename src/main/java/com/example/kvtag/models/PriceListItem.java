@@ -3,14 +3,12 @@ package com.example.kvtag.models;
 import ai.qworks.dao.annotations.Mandatory;
 import ai.qworks.dao.annotations.SharedObject;
 import ai.qworks.dao.base.BaseEntity;
-import ai.qworks.dto.PriceListItemObj;
 import ai.qworks.dto.SubscriptionManagement;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -82,25 +80,4 @@ public class PriceListItem extends BaseEntity {
     private SubscriptionManagement subscriptionManagement;
 
     private List<KVTag> kvTags;
-
-    public String toFilterableString() {
-        StringBuilder sb = new StringBuilder();
-
-        if(this.kvTags != null && !this.kvTags.isEmpty()) {
-            for(KVTag kvTag : this.kvTags) {
-                sb.append(kvTag.getName());
-                String values = String.join(", ", kvTag.getValues());
-                if(StringUtils.isNotBlank(values)) {
-                    sb.append("##").append(values).append(", ");
-                }
-            }
-        }
-
-        return this.productName + ", " + this.productType + ", " + this.priceType
-                + ", " + this.priceMethod + ", " + this.priceUOM
-                + ", " + this.expressionCriteria + ", " + this.sellingUom
-                + ", " + this.adjustmentType + ", " + this.productCode
-                + ", " + this.model + ", " + this.featureGroupName +
-                ", " + this.productCode + ", " + this.rampType + ", " + sb;
-    }
 }

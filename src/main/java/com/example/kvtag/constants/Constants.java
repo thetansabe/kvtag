@@ -48,4 +48,8 @@ public class Constants {
             add("kvTags");
         }
     };
+
+    public static final List<String> fieldsForPriceListItemSearch =
+            List.of("listPrice", "discountedPrice", "basePrice", "extendedPrice", "baseExtendedPrice", "taxes", "shippingPrice", "adjustedNetPrice", "adjustmentValue");
+
 }
