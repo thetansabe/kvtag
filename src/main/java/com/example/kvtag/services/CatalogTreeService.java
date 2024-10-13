@@ -332,10 +332,10 @@ public class CatalogTreeService {
             PriceListItem item = (PriceListItem) node.getData();
             for (String fieldName : fieldNames) {
                 try {
-                    Field field = item.getClass().getDeclaredField(fieldName);
+                    Field field = PriceListItem.class.getDeclaredField(fieldName);
                     field.setAccessible(true);
 
-                    double fieldValue = (double) field.get(item);
+                    double fieldValue = (Double) field.get(item);
 
                     return evaluateCondition(fieldValue, condition);
                 } catch (NoSuchFieldException | IllegalAccessException e) {
