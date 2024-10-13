@@ -109,7 +109,7 @@ public class CatalogTreeService {
     }
 
     public List<CatalogTree> globalSearch(String input, List<CatalogTree> roots){
-        List<CatalogTree> result = new ArrayList<>(); // fetching all the catalogTree from the database instead of the API body
+        List<CatalogTree> result = new ArrayList<>(); // need to fetch all the catalogTree from the database instead of the API body
         for(CatalogTree root : roots){
             dfsAssembleByFilter(input, root);
             if(root.getIsActive()){

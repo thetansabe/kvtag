@@ -6,5 +6,5 @@ import java.util.List;
 
 public class CatalogSearchDTO {
     public String filter;
-    public List<CatalogTree> roots;
+    public List<CatalogTree> roots; // need to remove while integrating main repo
 }
