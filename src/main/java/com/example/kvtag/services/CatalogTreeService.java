@@ -5,7 +5,11 @@ import ai.qworks.dao.nontransaction.PriceListItem;
 import com.example.kvtag.models.Product;
 import ai.qworks.dao.nontransaction.CatalogTree;
 import com.example.kvtag.util.FormulaEvaluator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -310,4 +314,80 @@ public class CatalogTreeService {
         dfsAssembleByFilter(filter, objectType, root, result);
         return result;
     }
+
+
+    public static boolean isMatchingInput(CatalogTree node, String text) {
+        if (isSearchingByNumber(text)) {
+            return isMatchingNumberInput(node, text);
+        } else {
+            return false; // isStringExistInCatalogData()
+        }
+    }
+
+    private static boolean isSearchingByNumber(String text) {
+        return text.matches("^(>=|<=|>|<|=)?\\s*\\d+(\\.\\d+)?$");
+    }
+
+    private static boolean isMatchingNumberInput(CatalogTree node, String condition) {
+        if ("pricelistitem".equals(StringUtils.lowerCase(node.getType()))) {
+            PriceListItem item = (PriceListItem) node.getData();
+            List<String> fieldNames = List.of("listPrice", "discountedPrice", "basePrice", "extendedPrice", "baseExtendedPrice", "taxes", "shippingPrice", "adjustedNetPrice", "adjustmentValue");
+            for (String fieldName : fieldNames) {
+                try {
+                    Field field = PriceListItem.class.getDeclaredField(fieldName);
+                    field.setAccessible(true);
+
+                    if(field.get(item) == null) {
+                        continue;
+                    }
+
+                    double fieldValue = (Double) field.get(item);
+
+                    return evaluateCondition(fieldValue, condition);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean evaluateCondition(double value, String condition) {
+        condition = condition.replaceAll("\\s+", "");
+
+        String operator = condition.replaceAll("\\d+.*", "");
+        String compareValueStr = condition.replaceAll("[^\\d.]", "");
+
+        if (operator.isEmpty()) {
+            operator = "=";
+        }
+
+        double compareValue = Double.parseDouble(compareValueStr);
+
+        switch (operator) {
+            case ">":
+                return value > compareValue;
+            case "<":
+                return value < compareValue;
+            case ">=":
+                return value >= compareValue;
+            case "<=":
+                return value <= compareValue;
+            case "=":
+            case "==":
+                return value == compareValue;
+            default:
+                return false;
+        }
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        CatalogTree tree = mockCatalogTree();
+        isMatchingInput(tree, ">= 300");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(tree);
+        System.out.println(jsonString);
+    }
+
 }
