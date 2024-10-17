@@ -65,11 +65,15 @@ public class CatalogTreeService {
 
             var fieldValue = lHashMap.get(fieldName);
 
-            if(fieldValue instanceof Integer){
+            if(!(fieldValue instanceof Number)){
+                continue;
+            }
+
+            if(fieldValue instanceof Integer)
                 fieldValue = ((Integer) fieldValue).doubleValue();
-                if(NumberFilterEvaluator.evaluateCondition((Double) fieldValue, condition)){
-                    return true;
-                }
+
+            if(NumberFilterEvaluator.evaluateCondition((Double) fieldValue, condition)){
+                return true;
             }
         }
 
