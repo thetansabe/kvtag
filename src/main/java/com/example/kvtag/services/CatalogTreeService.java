@@ -15,8 +15,6 @@ import java.util.Vector;
 @Slf4j
 @Service
 public class CatalogTreeService {
-
-    // DO NOT USE STATIC IN REAL CASE
     private static boolean isStringExistInCatalogData(String input, CatalogTree node){
         StringBuilder sb = new StringBuilder();
 
@@ -28,6 +26,7 @@ public class CatalogTreeService {
             if(item.getKey() != null && item.getKey().toLowerCase().endsWith("id"))
                 continue;
 
+            // this is the field name for kvTags in each of the objects
             if("kvTags".equalsIgnoreCase(item.getKey())){
                 var kvTags = item.getValue();
                 if(kvTags instanceof List<?>){
@@ -54,7 +53,6 @@ public class CatalogTreeService {
         return StringUtils.containsIgnoreCase(sb.toString(), input);
     }
 
-    // DO NOT USE STATIC IN REAL CASE
     private static boolean isMatchingNumberInput(CatalogTree node, String condition) {
         // one of the fields in the list should match the condition
         for (String fieldName : Constants.fieldsForPriceListItemSearch) {
@@ -80,7 +78,6 @@ public class CatalogTreeService {
         return false;
     }
 
-    // DO NOT USE STATIC IN REAL CASE
     private static boolean isMatchingInput(CatalogTree node, String text) {
         if (NumberFilterEvaluator.isSearchingByNumber(text)) {
             // search for number only apply for PriceListItem
@@ -92,7 +89,6 @@ public class CatalogTreeService {
         return isStringExistInCatalogData(text, node);
     }
 
-    // DO NOT USE STATIC IN REAL CASE
     public static void dfsAssembleByFilter(String input, CatalogTree node){
         if(node.getData() == null || !isMatchingInput(node, input)){
             node.setIsActive(false);
@@ -117,7 +113,7 @@ public class CatalogTreeService {
     }
 
     public List<CatalogTree> globalSearch(String input, List<CatalogTree> roots){
-        List<CatalogTree> result = new ArrayList<>();
+        List<CatalogTree> result = new ArrayList<>(); // fetching all the catalogTree from the database instead of the API body
         for(CatalogTree root : roots){
             dfsAssembleByFilter(input, root);
             if(root.getIsActive()){
