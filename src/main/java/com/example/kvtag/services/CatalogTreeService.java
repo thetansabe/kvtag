@@ -92,6 +92,9 @@ public class CatalogTreeService {
     public static void dfsAssembleByFilter(String input, CatalogTree node){
         if(node.getData() == null || !isMatchingInput(node, input)){
             node.setIsActive(false);
+        }else{
+            node.setIsActive(true);
+            return;
         }
 
         if(node.getChild() != null && !node.getChild().isEmpty()){
